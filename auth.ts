@@ -3,7 +3,7 @@ import NextAuth from 'next-auth';
 import { loginSchema } from './lib/validators';
 import { sql } from '@vercel/postgres';
 import type { User } from '@/lib/definitions';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 async function getUser(email: string): Promise<User | undefined> {
   try {
