@@ -180,9 +180,7 @@ export async function fetchCustomers() {
       FROM customers
       ORDER BY name ASC
     `;
-
-    const customers = data.rows;
-    return customers;
+    return data.rows;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all customers.');

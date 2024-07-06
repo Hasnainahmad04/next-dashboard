@@ -9,6 +9,10 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/ui/button';
+import { updateInvoice } from '@/lib/action';
+import { useFormStatus } from 'react-dom';
+import toast from 'react-hot-toast';
+import { redirect } from 'next/navigation';
 
 export default function EditInvoiceForm({
   invoice,
@@ -17,8 +21,14 @@ export default function EditInvoiceForm({
   invoice: InvoiceForm;
   customers: CustomerField[];
 }) {
+  const handleSubmit = (formData: FormData) => {
+    updateInvoice(invoice.id, formData);
+    toast.success('Invoice Updated');
+    redirect('/dashboard/invoices');
+  };
+
   return (
-    <form>
+    <form action={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
@@ -116,8 +126,18 @@ export default function EditInvoiceForm({
         >
           Cancel
         </Link>
-        <Button type="submit">Edit Invoice</Button>
+        <UpdateButton />
       </div>
     </form>
   );
 }
+
+const UpdateButton = () => {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? 'Updating...' : 'Update Invoice'}
+    </Button>
+  );
+};
